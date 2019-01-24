@@ -1,0 +1,28 @@
+// Consider adding sanitize.css - https://github.com/csstools/sanitize.css
+
+// Global overrides
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+:global(#app) {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1;
+}
+
+button,
+input,
+select,
+textarea {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}

@@ -1,3 +1,4 @@
+const configPath = '<rootDir>/config/test';
 const assetsExtensionsRegex = '\\.(png|svg|ttf|woff|woff2)$';
 const stylesExtensionsRegex = '\\.scss$';
 
@@ -10,13 +11,13 @@ module.exports = {
     'js',
   ],
   moduleNameMapper: {
-    [assetsExtensionsRegex]: '<rootDir>/test/fileMock.js',
+    [assetsExtensionsRegex]: `${configPath}/fileMock.js`,
     [stylesExtensionsRegex]: 'identity-obj-proxy',
   },
   roots: [
     '<rootDir>/src',
   ],
-  setupTestFrameworkScriptFile: '<rootDir>/test/setupEnzyme.js',
+  setupTestFrameworkScriptFile: `${configPath}/setupEnzyme.js`,
   snapshotSerializers: [
     'enzyme-to-json/serializer',
   ],

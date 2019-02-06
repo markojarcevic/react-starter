@@ -1,34 +1,41 @@
-const path = require('path');
-const merge = require('webpack-merge');
 const webpack = require('webpack');
 const postcssPresetEnv = require('postcss-preset-env');
-const common = require('./webpack.common.js');
+const {
+  src,
+  themesPath,
+  outputPath,
+} = require('./paths');
 
-const projectRoot = path.resolve(__dirname, '../src');
-
-module.exports = merge(common, {
+module.exports = {
   mode: 'development',
   output: {
     filename: '[name].js',
+    pathinfo: false,
   },
   devtool: 'eval-source-map',
   devServer: {
     clientLogLevel: 'none',
-    contentBase: path.join(__dirname, '../dist'),
+    contentBase: outputPath,
     compress: true,
+    historyApiFallback: true,
     hot: true,
     open: true,
+  },
+  optimization: {
+    removeAvailableModules: false,
+    removeEmptyChunks: false,
+    splitChunks: false,
   },
   module: {
     rules: [
       {
         test: /\.html$/,
-        include: projectRoot,
+        include: src,
         loader: 'html-loader',
       },
       {
         test: /\.scss$/,
-        include: projectRoot,
+        include: src,
         use: [
           'style-loader',
           {
@@ -45,13 +52,14 @@ module.exports = merge(common, {
             options: {
               ident: 'postcss',
               plugins: () => [postcssPresetEnv()],
+              sourceMap: true,
             },
           },
           {
             loader: 'sass-loader',
             options: {
               data: '@import "variables";',
-              includePaths: [path.resolve(__dirname, '../src/theme')],
+              includePaths: [themesPath],
               outputStyle: 'expanded',
               sourceMap: true,
             },
@@ -64,4 +72,4 @@ module.exports = merge(common, {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.ProgressPlugin(),
   ],
-});
+};

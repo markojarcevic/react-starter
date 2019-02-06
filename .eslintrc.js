@@ -21,7 +21,12 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['import', 'react'],
+  plugins: [
+    'import',
+    'react',
+    'jsx-a11y',
+    'compat',
+  ],
   root: true,
   rules: {
     /*
@@ -33,6 +38,7 @@ module.exports = {
     */
     'comma-dangle': [1, 'always-multiline'],
     'comma-spacing': 1,
+    'compat/compat': 1,
     'global-require': 0,
     'import/no-dynamic-require': 0,
     'import/no-extraneous-dependencies': [2, { devDependencies: true }],
@@ -63,10 +69,6 @@ module.exports = {
     'quotes': 1,
   },
   settings: {
-    'import/resolver': {
-      webpack: {
-        config: path.join(__dirname, 'config/webpack.common.js')
-      }
-    }
+    'import/resolver': 'webpack'
   },
 };

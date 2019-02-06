@@ -1,8 +1,11 @@
-const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
-
-const projectRoot = path.resolve(__dirname, '../src');
+const {
+  fontsFolder,
+  imagesFolder,
+  src,
+  templatePath,
+} = require('./paths');
 
 module.exports = {
   module: {
@@ -10,17 +13,17 @@ module.exports = {
       {
         enforce: 'pre',
         test: /\.js$/,
-        include: projectRoot,
+        include: src,
         loader: 'eslint-loader',
       },
       {
         test: /\.js$/,
-        include: projectRoot,
+        include: src,
         loader: 'babel-loader',
       },
       {
         test: /\.svg$/,
-        include: projectRoot,
+        include: src,
         loader: 'svg-url-loader',
         options: {
           noquotes: true,
@@ -28,12 +31,13 @@ module.exports = {
       },
       {
         test: /\.(gif|png|jpe?g)$/i,
-        include: projectRoot,
+        include: src,
         use: [
           {
             loader: 'url-loader',
             options: {
               limit: 10240,
+              outputPath: imagesFolder,
             },
           },
           'image-webpack-loader',
@@ -41,17 +45,17 @@ module.exports = {
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        include: projectRoot,
+        include: src,
         loader: 'file-loader',
         options: {
           name: '[name].[ext]',
-          outputPath: 'fonts/',
+          outputPath: fontsFolder,
         },
       },
     ],
   },
   resolve: {
-    modules: [projectRoot, 'node_modules'],
+    modules: [src, 'node_modules'],
     extensions: ['.json', '.js'],
     plugins: [
       new DirectoryNamedWebpackPlugin(),
@@ -59,8 +63,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      filename: './index.html',
-      template: './src/index.html',
+      template: templatePath,
     }),
   ],
 };

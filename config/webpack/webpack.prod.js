@@ -1,15 +1,16 @@
-const path = require('path');
-const merge = require('webpack-merge');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const postcssPresetEnv = require('postcss-preset-env');
-const common = require('./webpack.common.js');
+const {
+  root,
+  src,
+  themesPath,
+  outputPath,
+} = require('./paths');
 
-const projectRoot = path.resolve(__dirname, '../src');
-
-module.exports = merge(common, {
+module.exports = {
   mode: 'production',
   output: {
     filename: '[name].[contenthash].js',
@@ -28,7 +29,7 @@ module.exports = merge(common, {
     rules: [
       {
         test: /\.html$/,
-        include: projectRoot,
+        include: src,
         loader: 'html-loader',
         options: {
           minimize: true,
@@ -36,7 +37,7 @@ module.exports = merge(common, {
       },
       {
         test: /\.scss$/,
-        include: projectRoot,
+        include: src,
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -58,7 +59,7 @@ module.exports = merge(common, {
             loader: 'sass-loader',
             options: {
               data: '@import "variables";',
-              includePaths: [path.resolve(__dirname, '../src/theme')],
+              includePaths: [themesPath],
             },
           },
         ],
@@ -66,9 +67,9 @@ module.exports = merge(common, {
     ],
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin([outputPath], { root }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
     }),
   ],
-});
+};
